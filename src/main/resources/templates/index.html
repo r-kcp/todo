@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>ToDoアプリ</title>
+    <style>
+        .done{
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ToDoリスト</h1>
+
+    <form th:action="@{/add}" method="post">
+        <input type ="text" name="title" placeholder="新しいToDoを入力" required>
+        <button type="submit">追加</button>
+    </form>
+
+    <ul>
+        <li th:each="todo : ${todos}">
+            <form th:action="@{/toggle}" method="post" style="display: inline;">
+                <input type="hidden" name="id" th:value="${todo.id}" />
+                <input type="checkbox" name="done" th:checked="${todo.done}" onchange="this.form.submit()">
+            </form>
+
+            <span th:text="${todo.title}" th:classappend="${todo.done} ? 'done' : ''"></span>
+
+            <form th:action="@{/delete}" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${todo.id}" />
+                <button type="submit">削除</button>
+            </form>
+            <form th:action="@{/edit}" method="get" style="display:inline;">
+                <input type="hidden" name="id" th:value="${todo.id}" />
+                <button type="submit">編集</button>
+            </form>
+            
+        </li>
+    </ul>
+
+</body>
+
+</html>
